@@ -350,7 +350,7 @@ class TextFr
     public $ExpectedExceptionNotThrown = 'L\'exception attendu ne fut pas levée';
     public $CannotCallVerifyOnStub = 'impossible d\'appeler VerifyExpectations sur la souche';
     public $ReturnsOrThrowsNotBoth = 'Vous ne pouvez définire qu\une seul valeur de retour(1 returns() ou 1 throws())';
-    public $ScenarioWithExpectMismatch = 'Les scenarios doivent être initialisé avec le même nombre d\'appel à "with" et "expect"';
+    public $ScenarioWithExpectMismatch = 'Les scenarios doivent etre initialisé avec le meme nombre d\'appel a "with" et "expect"';
     public $LineFile = 'Ligne {0} dans le fichier {1}';
 }
 class TextDe
@@ -385,11 +385,11 @@ class TextDe
 
 class TextPtBr
 {
-    public $FormatForTestRunTook = 'Execução de teste levou {0} segundos';
+    public $FormatForTestRunTook = 'Execuçao de teste levou {0} segundos';
     public $FormatForExpectedButWas = 'Esperado {0} mas foi {1}';
-    public $FormatForExpectedNotButWas = 'Não era esperado {0} mas foi {1}';
+    public $FormatForExpectedNotButWas = 'Nao era esperado {0} mas foi {1}';
     public $FormatForExpectedContainsButWas = 'Era esperado ser {0} mas foi {1}';
-    public $FormatForExpectedNotContainsButWas = 'Não era esperado seer {0} mas foi {1}';
+    public $FormatForExpectedNotContainsButWas = 'Nao era esperado seer {0} mas foi {1}';
     public $EnhanceTestFramework = 'Framework de teste Enhance';
     public $EnhanceTestFrameworkFull = 'Framework de teste unitário com PHP Enhance';
     public $TestResults = 'Resultado do teste';
@@ -401,13 +401,13 @@ class TextPtBr
     public $ExpectationFailed = 'Probabilidade falhou';
     public $Expected = 'Probabilidade';
     public $Called = 'Chamado';
-    public $InconclusiveOrNotImplemented = 'Inconclusivo ou não implementado';
+    public $InconclusiveOrNotImplemented = 'Inconclusivo ou nao implementado';
     public $Times = 'Vezes';
     public $MethodCoverage = 'Cobertura de método';
     public $Copyright = 'Direitos autorais';
-    public $ExpectedExceptionNotThrown = 'Exceção esperada não ocorreu';
-    public $CannotCallVerifyOnStub = 'Não foi possível chamar um esboço de VerifyExpectations';
-    public $ReturnsOrThrowsNotBoth = 'Você só deve definer um único valor de retorno (1 retorno() ou 1 throw())';
+    public $ExpectedExceptionNotThrown = 'Exceçao esperada nao ocorreu';
+    public $CannotCallVerifyOnStub = 'Nao foi possível chamar um esboço de VerifyExpectations';
+    public $ReturnsOrThrowsNotBoth = 'Voce só deve definer um único valor de retorno (1 retorno() ou 1 throw())';
     public $ScenarioWithExpectMismatch = 'Cenário deve ser iniciado com o mesmo número de chamadas de "with" e "expect"';
     public $LineFile = 'Linha {0} no arquivo {1}';
     public $TypeOfVar=" Tipo: ";
@@ -445,30 +445,30 @@ class TextSp
 
 class TextRo{
     public $FormatForTestRunTook = 'Testul a durat {0} secunde';
-    public $FormatForExpectedButWas = 'Se aștepta {0} dar a returnat {1}';
-    public $FormatForExpectedNotButWas = 'Nu se aștepta {0} dar a returnat {1}';
-    public $FormatForExpectedContainsButWas = 'Se aștepta sa conțină {0} dar conține {1}';
-    public $FormatForExpectedNotContainsButWas = 'Nu se aștepta sa conțină {0} dar conține  {1}';
+    public $FormatForExpectedButWas = 'Se a?tepta {0} dar a returnat {1}';
+    public $FormatForExpectedNotButWas = 'Nu se a?tepta {0} dar a returnat {1}';
+    public $FormatForExpectedContainsButWas = 'Se a?tepta sa con?ină {0} dar con?ine {1}';
+    public $FormatForExpectedNotContainsButWas = 'Nu se a?tepta sa con?ină {0} dar con?ine  {1}';
     public $EnhanceTestFramework = 'Enhance Test Framework';
     public $EnhanceTestFrameworkFull = 'Enhance PHP Unit Testing Framework';
     public $TestResults = 'Rezultate Teste';
     public $Test = 'Test';
     public $TestPassed = 'Testul a fost finalizat cu succes.';
-    public $TestFailed = 'Testul a eșuat.';
+    public $TestFailed = 'Testul a e?uat.';
     public $Passed = 'Succes';
-    public $Failed = 'Eșuat.';
-    public $ExpectationFailed = 'Așteptare eșuată';
-    public $Expected = 'Așteptare';
+    public $Failed = 'E?uat.';
+    public $ExpectationFailed = 'A?teptare e?uată';
+    public $Expected = 'A?teptare';
     public $Called = 'Apelat';
     public $InconclusiveOrNotImplemented = 'Neconcludent sau neimplementat';
     public $Times = 'Ori';
     public $MethodCoverage = 'Învăluire metoda';
     public $Copyright = 'Drepturi de autor';
-    public $ExpectedExceptionNotThrown = 'Se aștepta o excepție dar nu a fost afișata';
+    public $ExpectedExceptionNotThrown = 'Se a?tepta o excep?ie dar nu a fost afi?ata';
     public $CannotCallVerifyOnStub = 'Nu a putut fi apelata metoda VerifyExpectations pe un stub';
     public $ReturnsOrThrowsNotBoth = 'Trebuie sa alegi numai o valoare pentru a fi returnata (1 returns() sau 1 throws())';
-    public $ScenarioWithExpectMismatch = 'Scenariul trebuie inițializat cu același număr de apelări la metoda "with" sau "expect" ';
-    public $LineFile = 'Linia {0} in fișierul {1}';
+    public $ScenarioWithExpectMismatch = 'Scenariul trebuie ini?ializat cu acela?i număr de apelări la metoda "with" sau "expect" ';
+    public $LineFile = 'Linia {0} in fi?ierul {1}';
 }
 
 class EnhanceTestFramework
@@ -603,7 +603,15 @@ class EnhanceTestFramework
                 $message = $test->getTestName() . ' - ' . $this->Text->Passed;
                 $this->Results[] = new TestMessage($message, $test, true);
             } else {
-                $message = '['. str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . '] ' .
+				$file = $test->getFile();
+				$line = $test->getLine();
+			
+				$params = http_build_query(array(
+					'file' => $file,
+					'line' => $line,
+				), '', '&amp;');
+				
+                $message = "<a href='editor://open/?$params' title='$file:$line'>[". str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . ']</a> ' .
                     $test->getTestName() . ' - ' .
                     $this->Text->Failed . ' - ' . $test->getMessage();
                 $this->Errors[] = new TestMessage($message, $test, false);
@@ -1800,4 +1808,3 @@ class Localisation
 {
     public $Language = Language::English;
 }
-?>
