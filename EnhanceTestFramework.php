@@ -1,303 +1,263 @@
 <?php
+
 namespace Enhance;
 
-ini_set('error_reporting', (string)E_ALL);
+ini_set('error_reporting', (string) E_ALL);
 ini_set('display_errors', '1');
 
 // Public API
-class Core
-{
+class Core {
+
     /** @var EnhanceTestFramework $Instance */
     private static $Instance;
     private static $Language = Language::English;
 
     /** @return Language */
-    public static function getLanguage()
-    {
-        return self::$Language;
+    public static function getLanguage() {
+	return self::$Language;
     }
 
-    public static function setLanguage($language)
-    {
-        self::$Language = $language;
+    public static function setLanguage($language) {
+	self::$Language = $language;
     }
 
-    public static function discoverTests($path, $isRecursive = true, $excludeRules = array())
-    {
-        self::setInstance();
-        self::$Instance->discoverTests($path, $isRecursive, $excludeRules);
+    public static function discoverTests($path, $isRecursive = true, $excludeRules = array()) {
+	self::setInstance();
+	self::$Instance->discoverTests($path, $isRecursive, $excludeRules);
     }
 
-    public static function runTests($output = TemplateType::Html)
-    {
-        self::setInstance();
-        self::$Instance->runTests($output);
+    public static function runTests($output = TemplateType::Html) {
+	self::setInstance();
+	self::$Instance->runTests($output);
     }
 
-    public static function getCodeCoverageWrapper($className, $args = null)
-    {
-        self::setInstance();
-        self::$Instance->registerForCodeCoverage($className);
-        return new CodeCoverageWrapper($className, $args);
+    public static function getCodeCoverageWrapper($className, $args = null) {
+	self::setInstance();
+	self::$Instance->registerForCodeCoverage($className);
+	return new CodeCoverageWrapper($className, $args);
     }
 
-    public static function log($className, $methodName)
-    {
-        self::setInstance();
-        self::$Instance->log($className, $methodName);
+    public static function log($className, $methodName) {
+	self::setInstance();
+	self::$Instance->log($className, $methodName);
     }
 
-    public static function getScenario($className, $args = null)
-    {
-        return new Scenario($className, $args, self::$Language);
+    public static function getScenario($className, $args = null) {
+	return new Scenario($className, $args, self::$Language);
     }
 
-    public static function setInstance()
-    {
-        if (self::$Instance === null) {
-            self::$Instance = new EnhanceTestFramework(self::$Language);
-        }
+    public static function setInstance() {
+	if (self::$Instance === null) {
+	    self::$Instance = new EnhanceTestFramework(self::$Language);
+	}
     }
-}
-
-// Public API
-class TestFixture
-{
 
 }
 
 // Public API
-class MockFactory
-{
-    public static function createMock($typeName)
-    {
-        return new Mock($typeName, true, Core::getLanguage());
-    }
+class TestFixture {
+    
 }
 
 // Public API
-class StubFactory
-{
-    public static function createStub($typeName)
-    {
-        return new Mock($typeName, false, Core::getLanguage());
+class MockFactory {
+
+    public static function createMock($typeName) {
+	return new Mock($typeName, true, Core::getLanguage());
     }
+
 }
 
 // Public API
-class Expect
-{
+class StubFactory {
+
+    public static function createStub($typeName) {
+	return new Mock($typeName, false, Core::getLanguage());
+    }
+
+}
+
+// Public API
+class Expect {
+
     const AnyValue = 'ENHANCE_ANY_VALUE_WILL_DO';
 
-    public static function method($methodName)
-    {
-        $expectation = new Expectation(Core::getLanguage());
-        return $expectation->method($methodName);
+    public static function method($methodName) {
+	$expectation = new Expectation(Core::getLanguage());
+	return $expectation->method($methodName);
     }
 
-    public static function getProperty($propertyName)
-    {
-        $expectation = new Expectation(Core::getLanguage());
-        return $expectation->getProperty($propertyName);
+    public static function getProperty($propertyName) {
+	$expectation = new Expectation(Core::getLanguage());
+	return $expectation->getProperty($propertyName);
     }
 
-    public static function setProperty($propertyName)
-    {
-        $expectation = new Expectation(Core::getLanguage());
-        return $expectation->setProperty($propertyName);
+    public static function setProperty($propertyName) {
+	$expectation = new Expectation(Core::getLanguage());
+	return $expectation->setProperty($propertyName);
     }
+
 }
 
 // Public API
-class Assert
-{
+class Assert {
+
     /** @var Assertions $EnhanceAssertions */
     private static $EnhanceAssertions;
 
-    private static function GetEnhanceAssertionsInstance()
-    {
-        if(self::$EnhanceAssertions === null) {
-            self::$EnhanceAssertions = new Assertions(Core::getLanguage());
-        }
-        return self::$EnhanceAssertions;
+    private static function GetEnhanceAssertionsInstance() {
+	if (self::$EnhanceAssertions === null) {
+	    self::$EnhanceAssertions = new Assertions(Core::getLanguage());
+	}
+	return self::$EnhanceAssertions;
     }
 
-    public static function areIdentical($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->areIdentical($expected, $actual);
+    public static function areIdentical($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->areIdentical($expected, $actual);
     }
 
-    public static function areNotIdentical($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->areNotIdentical($expected, $actual);
+    public static function areNotIdentical($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->areNotIdentical($expected, $actual);
     }
 
-    public static function isTrue($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isTrue($actual);
+    public static function isTrue($actual) {
+	self::GetEnhanceAssertionsInstance()->isTrue($actual);
     }
 
-    public static function isFalse($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isFalse($actual);
+    public static function isFalse($actual) {
+	self::GetEnhanceAssertionsInstance()->isFalse($actual);
     }
 
-    public static function isNull($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNull($actual);
+    public static function isNull($actual) {
+	self::GetEnhanceAssertionsInstance()->isNull($actual);
     }
 
-    public static function isNotNull($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotNull($actual);
+    public static function isNotNull($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotNull($actual);
     }
 
-    public static function isArray($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isArray($actual);
+    public static function isArray($actual) {
+	self::GetEnhanceAssertionsInstance()->isArray($actual);
     }
 
-    public static function isNotArray($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotArray($actual);
+    public static function isNotArray($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotArray($actual);
     }
 
-    public static function isBool($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isBool($actual);
+    public static function isBool($actual) {
+	self::GetEnhanceAssertionsInstance()->isBool($actual);
     }
 
-    public static function isNotBool($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotBool($actual);
+    public static function isNotBool($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotBool($actual);
     }
 
-    public static function isFloat($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isFloat($actual);
+    public static function isFloat($actual) {
+	self::GetEnhanceAssertionsInstance()->isFloat($actual);
     }
 
-    public static function isNotFloat($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotFloat($actual);
+    public static function isNotFloat($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotFloat($actual);
     }
 
-    public static function isInt($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isInt($actual);
+    public static function isInt($actual) {
+	self::GetEnhanceAssertionsInstance()->isInt($actual);
     }
 
-    public static function isNotInt($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotInt($actual);
+    public static function isNotInt($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotInt($actual);
     }
 
-    public static function isNumeric($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNumeric($actual);
+    public static function isNumeric($actual) {
+	self::GetEnhanceAssertionsInstance()->isNumeric($actual);
     }
 
-    public static function isNotNumeric($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotNumeric($actual);
+    public static function isNotNumeric($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotNumeric($actual);
     }
 
-    public static function isObject($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isObject($actual);
+    public static function isObject($actual) {
+	self::GetEnhanceAssertionsInstance()->isObject($actual);
     }
 
-    public static function isNotObject($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotObject($actual);
+    public static function isNotObject($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotObject($actual);
     }
 
-    public static function isResource($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isResource($actual);
+    public static function isResource($actual) {
+	self::GetEnhanceAssertionsInstance()->isResource($actual);
     }
 
-    public static function isNotResource($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotResource($actual);
+    public static function isNotResource($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotResource($actual);
     }
 
-    public static function isScalar($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isScalar($actual);
+    public static function isScalar($actual) {
+	self::GetEnhanceAssertionsInstance()->isScalar($actual);
     }
 
-    public static function isNotScalar($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotScalar($actual);
+    public static function isNotScalar($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotScalar($actual);
     }
 
-    public static function isString($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isString($actual);
+    public static function isString($actual) {
+	self::GetEnhanceAssertionsInstance()->isString($actual);
     }
 
-    public static function isNotString($actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotString($actual);
+    public static function isNotString($actual) {
+	self::GetEnhanceAssertionsInstance()->isNotString($actual);
     }
 
-    public static function contains($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->contains($expected, $actual);
+    public static function contains($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->contains($expected, $actual);
     }
 
-    public static function notContains($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->notContains($expected, $actual);
+    public static function notContains($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->notContains($expected, $actual);
     }
 
-    public static function fail()
-    {
-        self::GetEnhanceAssertionsInstance()->fail();
+    public static function fail() {
+	self::GetEnhanceAssertionsInstance()->fail();
     }
 
-    public static function inconclusive()
-    {
-        self::GetEnhanceAssertionsInstance()->inconclusive();
+    public static function inconclusive() {
+	self::GetEnhanceAssertionsInstance()->inconclusive();
     }
 
-    public static function isInstanceOfType($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isInstanceOfType($expected, $actual);
+    public static function isInstanceOfType($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->isInstanceOfType($expected, $actual);
     }
 
-    public static function isNotInstanceOfType($expected, $actual)
-    {
-        self::GetEnhanceAssertionsInstance()->isNotInstanceOfType($expected, $actual);
+    public static function isNotInstanceOfType($expected, $actual) {
+	self::GetEnhanceAssertionsInstance()->isNotInstanceOfType($expected, $actual);
     }
 
-    public static function throws($class, $methodName, $args = null)
-    {
-        self::GetEnhanceAssertionsInstance()->throws($class, $methodName, $args);
+    public static function throws($class, $methodName, $args = null) {
+	self::GetEnhanceAssertionsInstance()->throws($class, $methodName, $args);
     }
+
 }
 
 // Internal Workings
 // You don't need to call any of these bits directly - use the public API above, which will
 // use the stuff below to carry out your tests!
 
-class TextFactory
-{
+class TextFactory {
+
     public static $Text;
 
-    public static function getLanguageText($language)
-    {
-        if (self::$Text === null) {
-            $languageClass = 'Enhance\Text' . $language;
-            self::$Text = new $languageClass();
-        }
-        return self::$Text;
+    public static function getLanguageText($language) {
+	if (self::$Text === null) {
+	    $languageClass = 'Enhance\Text' . $language;
+	    self::$Text = new $languageClass();
+	}
+	return self::$Text;
     }
+
 }
 
-class TextEn
-{
+class TextEn {
+
     public $FormatForTestRunTook = 'Test run took {0} seconds';
     public $FormatForExpectedButWas = 'Expected {0} but was {1}';
     public $FormatForExpectedNotButWas = 'Expected NOT {0} but was {1}';
@@ -323,10 +283,11 @@ class TextEn
     public $ReturnsOrThrowsNotBoth = 'You must only set a single return value (1 returns() or 1 throws())';
     public $ScenarioWithExpectMismatch = 'Scenario must be initialised with the same number of "with" and "expect" calls';
     public $LineFile = 'Line {0} in file {1}';
+
 }
 
-class TextFr
-{
+class TextFr {
+
     public $FormatForTestRunTook = 'Le test a prit {0} seconds';
     public $FormatForExpectedButWas = '{0} attendu mais finalement fut {1}';
     public $FormatForExpectedNotButWas = 'Pas {0} attendu mais finalement fut {1}';
@@ -352,9 +313,11 @@ class TextFr
     public $ReturnsOrThrowsNotBoth = 'Vous ne pouvez définire qu\une seul valeur de retour(1 returns() ou 1 throws())';
     public $ScenarioWithExpectMismatch = 'Les scenarios doivent etre initialisé avec le meme nombre d\'appel a "with" et "expect"';
     public $LineFile = 'Ligne {0} dans le fichier {1}';
+
 }
-class TextDe
-{
+
+class TextDe {
+
     public $FormatForTestRunTook = 'Fertig nach {0} Sekunden';
     public $FormatForExpectedButWas = 'Erwartet {0} aber war {1}';
     public $FormatForExpectedNotButWas = 'Erwartet nicht {0} aber war {1}';
@@ -380,11 +343,12 @@ class TextDe
     public $ReturnsOrThrowsNotBoth = 'Sie müssen einen einzelnen Return Value nur einstellen';
     public $ScenarioWithExpectMismatch = 'Szenarium muss mit der gleichen Zahl von "With" und "Expect" calls initialisiert werden';
     public $LineFile = 'Zeile {0} der Datei {1}';
-    public $TypeOfVar=" Typ: ";
+    public $TypeOfVar = " Typ: ";
+
 }
 
-class TextPtBr
-{
+class TextPtBr {
+
     public $FormatForTestRunTook = 'Execuçao de teste levou {0} segundos';
     public $FormatForExpectedButWas = 'Esperado {0} mas foi {1}';
     public $FormatForExpectedNotButWas = 'Nao era esperado {0} mas foi {1}';
@@ -410,11 +374,12 @@ class TextPtBr
     public $ReturnsOrThrowsNotBoth = 'Voce só deve definer um único valor de retorno (1 retorno() ou 1 throw())';
     public $ScenarioWithExpectMismatch = 'Cenário deve ser iniciado com o mesmo número de chamadas de "with" e "expect"';
     public $LineFile = 'Linha {0} no arquivo {1}';
-    public $TypeOfVar=" Tipo: ";
+    public $TypeOfVar = " Tipo: ";
+
 }
 
-class TextSp
-{
+class TextSp {
+
     public $FormatForTestRunTook = 'La ejecución de las pruebas tomó {0} segundos';
     public $FormatForExpectedButWas = 'Se esperaba {0} pero se obuvo {1}';
     public $FormatForExpectedNotButWas = 'Se esperada Negación {0} pero se obtuvo {1}';
@@ -439,11 +404,13 @@ class TextSp
     public $CannotCallVerifyOnStub = 'No se puede llamar  VerifyExpectations en un stub';
     public $ReturnsOrThrowsNotBoth = 'Debe proporcionar un solo valor de retorno (1 returns() ó 1 throws())';
     public $ScenarioWithExpectMismatch = 'Escenario debe ser inicializado con el mismo número de llamadas "with" y "expect" ';
-    public $LineFile = 'Linha {0} no arquivo {1}';    
-    public $TypeOfVar=" Tipo: ";
+    public $LineFile = 'Linha {0} no arquivo {1}';
+    public $TypeOfVar = " Tipo: ";
+
 }
 
-class TextRo{
+class TextRo {
+
     public $FormatForTestRunTook = 'Testul a durat {0} secunde';
     public $FormatForExpectedButWas = 'Se a?tepta {0} dar a returnat {1}';
     public $FormatForExpectedNotButWas = 'Nu se a?tepta {0} dar a returnat {1}';
@@ -469,10 +436,11 @@ class TextRo{
     public $ReturnsOrThrowsNotBoth = 'Trebuie sa alegi numai o valoare pentru a fi returnata (1 returns() sau 1 throws())';
     public $ScenarioWithExpectMismatch = 'Scenariul trebuie ini?ializat cu acela?i număr de apelări la metoda "with" sau "expect" ';
     public $LineFile = 'Linia {0} in fi?ierul {1}';
+
 }
 
-class EnhanceTestFramework
-{
+class EnhanceTestFramework {
+
     private $FileSystem;
     private $Text;
     private $Tests = array();
@@ -482,214 +450,201 @@ class EnhanceTestFramework
     private $MethodCalls = array();
     private $Language;
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
-        $this->FileSystem = new FileSystem();
-        $this->Language = $language;
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
+	$this->FileSystem = new FileSystem();
+	$this->Language = $language;
     }
 
-    public function discoverTests($path, $isRecursive, $excludeRules)
-    {
-        $directory = rtrim($path, '/');
-        if (is_dir($directory)) {
-            $phpFiles = $this->FileSystem->getFilesFromDirectory($directory, $isRecursive, $excludeRules);
-            foreach ($phpFiles as $file) {
-                /** @noinspection PhpIncludeInspection */
-                include_once($file);
-            }
-        }
+    public function discoverTests($path, $isRecursive, $excludeRules) {
+	$directory = rtrim($path, '/');
+	if (is_dir($directory)) {
+	    $phpFiles = $this->FileSystem->getFilesFromDirectory($directory, $isRecursive, $excludeRules);
+	    foreach ($phpFiles as $file) {
+		/** @noinspection PhpIncludeInspection */
+		include_once($file);
+	    }
+	}
     }
 
-    public function runTests($output)
-    {
-        $this->getTestFixturesByParent();
-        $this->run();
+    public function runTests($output) {
+	$this->getTestFixturesByParent();
+	$this->run();
 
-        if(PHP_SAPI === 'cli' && $output != TemplateType::Tap) {
-            $output = TemplateType::Cli;
-        }
+	if (PHP_SAPI === 'cli' && $output != TemplateType::Tap) {
+	    $output = TemplateType::Cli;
+	}
 
-        $OutputTemplate = TemplateFactory::createOutputTemplate($output, $this->Language);
-        echo $OutputTemplate->get(
-            $this->Errors,
-            $this->Results,
-            $this->Text,
-            $this->Duration,
-            $this->MethodCalls
-        );
+	$OutputTemplate = TemplateFactory::createOutputTemplate($output, $this->Language);
+	echo $OutputTemplate->get(
+		$this->Errors, $this->Results, $this->Text, $this->Duration, $this->MethodCalls
+	);
 
-        if (count($this->Errors) > 0) {
-            exit(1);
-        } else {
-            exit(0);
-        }
+	if (count($this->Errors) > 0) {
+	    exit(1);
+	} else {
+	    exit(0);
+	}
     }
 
-    public function log($className, $methodName)
-    {
-        $index = $this->getMethodIndex($className, $methodName);
-        if (array_key_exists($index ,$this->MethodCalls)) {
-            $this->MethodCalls[$index] = $this->MethodCalls[$index] + 1;
-        }
+    public function log($className, $methodName) {
+	$index = $this->getMethodIndex($className, $methodName);
+	if (array_key_exists($index, $this->MethodCalls)) {
+	    $this->MethodCalls[$index] = $this->MethodCalls[$index] + 1;
+	}
     }
 
-    public function registerForCodeCoverage($className)
-    {
-        $classMethods = get_class_methods($className);
-        foreach($classMethods as $methodName) {
-            $index = $this->getMethodIndex($className, $methodName);
-            if (!array_key_exists($index ,$this->MethodCalls)) {
-                $this->MethodCalls[$index] = 0;
-            }
-        }
+    public function registerForCodeCoverage($className) {
+	$classMethods = get_class_methods($className);
+	foreach ($classMethods as $methodName) {
+	    $index = $this->getMethodIndex($className, $methodName);
+	    if (!array_key_exists($index, $this->MethodCalls)) {
+		$this->MethodCalls[$index] = 0;
+	    }
+	}
     }
 
-    private function getMethodIndex($className, $methodName)
-    {
-        return $className . '#' . $methodName;
+    private function getMethodIndex($className, $methodName) {
+	return $className . '#' . $methodName;
     }
 
-    private function getTestFixturesByParent()
-    {
-        $classes = get_declared_classes();
-        foreach($classes as $className) {
-            $this->AddClassIfTest($className);
-        }
+    private function getTestFixturesByParent() {
+	$classes = get_declared_classes();
+	foreach ($classes as $className) {
+	    $this->AddClassIfTest($className);
+	}
     }
 
-    private function AddClassIfTest($className)
-    {
-        $parentClassName = get_parent_class($className);
-        if ($parentClassName === 'Enhance\TestFixture') {
-            $instance = new $className();
-            $this->addFixture($instance);
-        } else {
-            $ancestorClassName = get_parent_class($parentClassName);
-            if ($ancestorClassName === 'Enhance\TestFixture') {
-                $instance = new $className();
-                $this->addFixture($instance);
-            }
-        }
+    private function AddClassIfTest($className) {
+	$parentClassName = get_parent_class($className);
+	if ($parentClassName === 'Enhance\TestFixture') {
+	    $instance = new $className();
+	    $this->addFixture($instance);
+	} else {
+	    $ancestorClassName = get_parent_class($parentClassName);
+	    if ($ancestorClassName === 'Enhance\TestFixture') {
+		$instance = new $className();
+		$this->addFixture($instance);
+	    }
+	}
     }
 
-    private function addFixture($class)
-    {
-        $classMethods = get_class_methods($class);
-        foreach($classMethods as $method) {
-            if (strtolower($method) !== 'setup' && strtolower($method) !== 'teardown') {
-                $reflection = new \ReflectionMethod($class, $method);
-                if ($reflection->isPublic()) {
-                    $this->addTest($class, $method);
-                }
-            }
-        }
+    private function addFixture($class) {
+	$classMethods = get_class_methods($class);
+	foreach ($classMethods as $method) {
+	    if (strtolower($method) !== 'setup' && strtolower($method) !== 'teardown') {
+		$reflection = new \ReflectionMethod($class, $method);
+		if ($reflection->isPublic()) {
+		    $this->addTest($class, $method);
+		}
+	    }
+	}
     }
 
-    private function addTest($class, $method)
-    {
-        $testMethod = new Test($class, $method);
-        $this->Tests[] = $testMethod;
+    private function addTest($class, $method) {
+	$testMethod = new Test($class, $method);
+	$this->Tests[] = $testMethod;
     }
 
-    private function run()
-    {
-        $start = microtime(true);
-        foreach($this->Tests as /** @var Test $test */ $test) {
-			if(class_exists('\codespy\Analyzer')) \codespy\Analyzer::$currenttest =  $test->getTestName();
-            $result = $test->run();
-			if(class_exists('\codespy\Analyzer')) \codespy\Analyzer::$currenttest =  '';
-            if ($result) {
-                $message = $test->getTestName() . ' - ' . $this->Text->Passed;
-                $this->Results[] = new TestMessage($message, $test, true);
-            } else {
-				$file = $test->getFile();
-				$line = $test->getLine();
-			
-				$params = http_build_query(array(
-					'file' => $file,
-					'line' => $line,
-				), '', '&amp;');
-				
-                $message = "<a href='editor://open/?$params' title='$file:$line'>[". str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . ']</a> ' .
-                    $test->getTestName() . ' - ' .
-                    $this->Text->Failed . ' - ' . $test->getMessage();
-                $this->Errors[] = new TestMessage($message, $test, false);
-            }
-        }
-        $this->Duration = microtime(true) - $start;
+    private function run() {
+	$start = microtime(true);
+	foreach ($this->Tests as /** @var Test $test */ $test) {
+	    if (class_exists('\codespy\Analyzer'))
+		\codespy\Analyzer::$currenttest = $test->getTestName();
+	    $result = $test->run();
+	    if (class_exists('\codespy\Analyzer'))
+		\codespy\Analyzer::$currenttest = '';
+	    if ($result) {
+		$message = $test->getTestName() . ' - ' . $this->Text->Passed;
+		$this->Results[] = new TestMessage($message, $test, true);
+	    } else {
+		$filePath = $test->getFilePath();
+		;
+		$line = $test->getLine();
+
+		$params = http_build_query(array(
+		    'file' => $filePath,
+		    'line' => $line,
+			), '', '&amp;');
+
+		$message = "<a href='editor://open/?$params' title='$filePath:$line'>[" . str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . ']</a> ' .
+			$test->getTestName() . ' - ' .
+			$this->Text->Failed . ' - ' . $test->getMessage();
+		$this->Errors[] = new TestMessage($message, $test, false);
+	    }
+	}
+	$this->Duration = microtime(true) - $start;
     }
+
 }
 
-class FileSystem
-{
-    public function getFilesFromDirectory($directory, $isRecursive, $excludeRules)
-    {
-        $files = array();
-        if ($handle = opendir($directory)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file != '.' && $file != '..' && strpos($file, '.') !== 0) {
-                    if ($this->isFolderExcluded($file, $excludeRules)){
-                        continue;
-                    }
+class FileSystem {
 
-                    if(is_dir($directory . '/' . $file)) {
-                        if ($isRecursive) {
-                            $dir2 = $directory . '/' . $file;
-                            $files[] = $this->getFilesFromDirectory($dir2, $isRecursive, $excludeRules);
-                        }
-                    } else {
-                        $files[] = $directory . '/' . $file;
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        return $this->flattenArray($files);
+    public function getFilesFromDirectory($directory, $isRecursive, $excludeRules) {
+	$files = array();
+	if ($handle = opendir($directory)) {
+	    while (false !== ($file = readdir($handle))) {
+		if ($file != '.' && $file != '..' && strpos($file, '.') !== 0) {
+		    if ($this->isFolderExcluded($file, $excludeRules)) {
+			continue;
+		    }
+
+		    if (is_dir($directory . '/' . $file)) {
+			if ($isRecursive) {
+			    $dir2 = $directory . '/' . $file;
+			    $files[] = $this->getFilesFromDirectory($dir2, $isRecursive, $excludeRules);
+			}
+		    } else {
+			$files[] = $directory . '/' . $file;
+		    }
+		}
+	    }
+	    closedir($handle);
+	}
+	return $this->flattenArray($files);
     }
 
-    private function isFolderExcluded($folder, $excludeRules)
-    {
-        $folder = substr($folder, strrpos($folder, '/'));
+    private function isFolderExcluded($folder, $excludeRules) {
+	$folder = substr($folder, strrpos($folder, '/'));
 
-        foreach ($excludeRules as $excluded){
-            if ($folder === $excluded){
-                return true;
-            }
-        }
-        return false;
+	foreach ($excludeRules as $excluded) {
+	    if ($folder === $excluded) {
+		return true;
+	    }
+	}
+	return false;
     }
 
-    public function flattenArray($array)
-    {
-        $merged = array();
-        foreach($array as $a) {
-            if(is_array($a)) {
-                $merged = array_merge($merged, $this->flattenArray($a));
-            } else {
-                $merged[] = $a;
-            }
-        }
-        return $merged;
+    public function flattenArray($array) {
+	$merged = array();
+	foreach ($array as $a) {
+	    if (is_array($a)) {
+		$merged = array_merge($merged, $this->flattenArray($a));
+	    } else {
+		$merged[] = $a;
+	    }
+	}
+	return $merged;
     }
+
 }
 
-class TestMessage
-{
+class TestMessage {
+
     public $Message;
     public $Test;
     public $IsPass;
 
-    public function __construct($message, $test, $isPass)
-    {
-        $this->Message = $message;
-        $this->Test = $test;
-        $this->IsPass = $isPass;
+    public function __construct($message, $test, $isPass) {
+	$this->Message = $message;
+	$this->Test = $test;
+	$this->IsPass = $isPass;
     }
+
 }
 
-class Test
-{
+class Test {
+
     private $ClassName;
     private $TestName;
     private $TestMethod;
@@ -698,305 +653,294 @@ class Test
     private $Message;
     private $Line;
     private $File;
+    private $FilePath;
 
-    public function __construct($class, $method)
-    {
-        $className = get_class($class);
-        $this->ClassName = $className;
-        $this->TestMethod = array($className, $method);
-        $this->SetUpMethod = array($className, 'setUp');
-        $this->TearDownMethod = array($className, 'tearDown');
-        $this->TestName = $method;
+    public function __construct($class, $method) {
+	$className = get_class($class);
+	$this->ClassName = $className;
+	$this->TestMethod = array($className, $method);
+	$this->SetUpMethod = array($className, 'setUp');
+	$this->TearDownMethod = array($className, 'tearDown');
+	$this->TestName = $method;
     }
 
-    public function getTestName()
-    {
-        return $this->TestName;
+    public function getTestName() {
+	return $this->TestName;
     }
 
-    public function getClassName()
-    {
-        return $this->ClassName;
+    public function getClassName() {
+	return $this->ClassName;
     }
 
-    public function getMessage()
-    {
-        return $this->Message;
+    public function getMessage() {
+	return $this->Message;
     }
 
-    public function getLine()
-    {
-        return $this->Line;
+    public function getLine() {
+	return $this->Line;
     }
 
-    public function getFile()
-    {
-        return $this->File;
+    public function getFile() {
+	return $this->File;
     }
 
-    public function run()
-    {
-        /** @var $testClass iTestable */
-        $testClass = new $this->ClassName();
-
-        try {
-            if (is_callable($this->SetUpMethod)) {
-                $testClass->setUp();
-            }
-        } catch (\Exception $e) { }
-
-        try {
-            $testClass->{$this->TestName}();
-            $result = true;
-        } catch (TestException $e) {
-            $this->Message = $e->getMessage();
-            $this->Line = $e->getLine();
-            $this->File = pathinfo($e->getFile(), PATHINFO_BASENAME);
-            $result = false;
-        }
-
-        try {
-            if (is_callable($this->TearDownMethod)) {
-                $testClass->tearDown();
-            }
-        } catch (\Exception $e) { }
-
-        return $result;
+    public function getFilePath() {
+	return $this->FilePath;
     }
+
+    public function run() {
+	/** @var $testClass iTestable */
+	$testClass = new $this->ClassName();
+
+	try {
+	    if (is_callable($this->SetUpMethod)) {
+		$testClass->setUp();
+	    }
+	} catch (\Exception $e) {
+	    
+	}
+
+	try {
+	    $testClass->{$this->TestName}();
+	    $result = true;
+	} catch (TestException $e) {
+	    $this->Message = $e->getMessage();
+	    $this->Line = $e->getLine();
+	    $this->FilePath = $e->getFile();
+	    $this->File = pathinfo($e->getFile(), PATHINFO_BASENAME);
+	    $result = false;
+	}
+
+	try {
+	    if (is_callable($this->TearDownMethod)) {
+		$testClass->tearDown();
+	    }
+	} catch (\Exception $e) {
+	    
+	}
+
+	return $result;
+    }
+
 }
 
-class CodeCoverageWrapper
-{
+class CodeCoverageWrapper {
+
     private $Instance;
     private $ClassName;
 
-    public function __construct($className, $args)
-    {
-        $this->ClassName = $className;
-        if ($args !== null) {
-            $rc = new \ReflectionClass($className);
-            $this->Instance = $rc->newInstanceArgs($args);
-        } else {
-            $this->Instance = new $className();
-        }
-        Core::log($this->ClassName, $className);
-        Core::log($this->ClassName, '__construct');
+    public function __construct($className, $args) {
+	$this->ClassName = $className;
+	if ($args !== null) {
+	    $rc = new \ReflectionClass($className);
+	    $this->Instance = $rc->newInstanceArgs($args);
+	} else {
+	    $this->Instance = new $className();
+	}
+	Core::log($this->ClassName, $className);
+	Core::log($this->ClassName, '__construct');
     }
 
-    public function __call($methodName, $args = null)
-    {
-        Core::log($this->ClassName, $methodName);
-        if ($args !== null) {
-            /** @noinspection PhpParamsInspection */
-            return call_user_func_array(array($this->Instance, $methodName), $args);
-        } else {
-            return $this->Instance->{$methodName}();
-        }
+    public function __call($methodName, $args = null) {
+	Core::log($this->ClassName, $methodName);
+	if ($args !== null) {
+	    /** @noinspection PhpParamsInspection */
+	    return call_user_func_array(array($this->Instance, $methodName), $args);
+	} else {
+	    return $this->Instance->{$methodName}();
+	}
     }
 
-    public function __get($propertyName)
-    {
-        return $this->Instance->{$propertyName};
+    public function __get($propertyName) {
+	return $this->Instance->{$propertyName};
     }
 
-    public function __set($propertyName, $value)
-    {
-        $this->Instance->{$propertyName} = $value;
+    public function __set($propertyName, $value) {
+	$this->Instance->{$propertyName} = $value;
     }
+
 }
 
-class Mock
-{
+class Mock {
+
     private $IsMock;
     private $Text;
     private $ClassName;
     private $Expectations = array();
 
-    public function __construct($className, $isMock, $language)
-    {
-        $this->IsMock = $isMock;
-        $this->ClassName = $className;
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($className, $isMock, $language) {
+	$this->IsMock = $isMock;
+	$this->ClassName = $className;
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function addExpectation($expectation)
-    {
-        $this->Expectations[] = $expectation;
+    public function addExpectation($expectation) {
+	$this->Expectations[] = $expectation;
     }
 
-    public function verifyExpectations()
-    {
-        if (!$this->IsMock) {
-            throw new \Exception(
-                $this->ClassName . ': ' . $this->Text->CannotCallVerifyOnStub
-            );
-        }
+    public function verifyExpectations() {
+	if (!$this->IsMock) {
+	    throw new \Exception(
+		    $this->ClassName . ': ' . $this->Text->CannotCallVerifyOnStub
+	    );
+	}
 
-        foreach ($this->Expectations as /** @var Expectation $expectation */ $expectation) {
-            if (!$expectation->verify()) {
-                $Arguments = '';
-                if (isset($expectation->MethodArguments)) {
-                    foreach($expectation->MethodArguments as $argument) {
-                        if (isset($Arguments[0])) {
-                            $Arguments .= ', ';
-                        }
-                        $Arguments .= $argument;
-                    }
-                }
+	foreach ($this->Expectations as /** @var Expectation $expectation */ $expectation) {
+	    if (!$expectation->verify()) {
+		$Arguments = '';
+		if (isset($expectation->MethodArguments)) {
+		    foreach ($expectation->MethodArguments as $argument) {
+			if (isset($Arguments[0])) {
+			    $Arguments .= ', ';
+			}
+			$Arguments .= $argument;
+		    }
+		}
 
-                throw new \Exception(
-                    $this->Text->ExpectationFailed . ' ' .
-                        $this->ClassName . '->' . $expectation->MethodName . '(' . $Arguments . ') ' .
-                        $this->Text->Expected . ' #' . $expectation->ExpectedCalls . ' ' .
-                        $this->Text->Called . ' #' . $expectation->ActualCalls, 0);
-            }
-        }
+		throw new \Exception(
+			$this->Text->ExpectationFailed . ' ' .
+			$this->ClassName . '->' . $expectation->MethodName . '(' . $Arguments . ') ' .
+			$this->Text->Expected . ' #' . $expectation->ExpectedCalls . ' ' .
+			$this->Text->Called . ' #' . $expectation->ActualCalls, 0);
+	    }
+	}
     }
 
-    public function __call($methodName, $args)
-    {
-        return $this->getReturnValue('method', $methodName, $args);
+    public function __call($methodName, $args) {
+	return $this->getReturnValue('method', $methodName, $args);
     }
 
-    public function __get($propertyName)
-    {
-        return $this->getReturnValue('getProperty', $propertyName, array());
+    public function __get($propertyName) {
+	return $this->getReturnValue('getProperty', $propertyName, array());
     }
 
-    public function __set($propertyName, $value)
-    {
-        $this->getReturnValue('setProperty', $propertyName, array($value));
+    public function __set($propertyName, $value) {
+	$this->getReturnValue('setProperty', $propertyName, array($value));
     }
 
-    private function getReturnValue($type, $methodName, $args)
-    {
-        $Expectation = $this->getMatchingExpectation($type, $methodName, $args);
-        $Expected = true;
-        if ($Expectation === null) {
-            $Expected = false;
-        }
+    private function getReturnValue($type, $methodName, $args) {
+	$Expectation = $this->getMatchingExpectation($type, $methodName, $args);
+	$Expected = true;
+	if ($Expectation === null) {
+	    $Expected = false;
+	}
 
-        if ($Expected) {
-            ++$Expectation->ActualCalls;
-            if ($Expectation->ReturnException) {
-                throw new \Exception($Expectation->ReturnValue);
-            }
-            return $Expectation->ReturnValue;
-        }
+	if ($Expected) {
+	    ++$Expectation->ActualCalls;
+	    if ($Expectation->ReturnException) {
+		throw new \Exception($Expectation->ReturnValue);
+	    }
+	    return $Expectation->ReturnValue;
+	}
 
-        if ($this->IsMock)  {
-            throw new \Exception(
-                $this->Text->ExpectationFailed . ' ' .
-                    $this->ClassName . '->' . $methodName . '(' . $args . ') ' .
-                    $this->Text->Expected . ' #0 ' .
-                    $this->Text->Called . ' #1', 0);
-        }
-        return null;
+	if ($this->IsMock) {
+	    throw new \Exception(
+		    $this->Text->ExpectationFailed . ' ' .
+		    $this->ClassName . '->' . $methodName . '(' . $args . ') ' .
+		    $this->Text->Expected . ' #0 ' .
+		    $this->Text->Called . ' #1', 0);
+	}
+	return null;
     }
 
-    private function getMatchingExpectation($type, $methodName, $arguments)
-    {
-        foreach ($this->Expectations as $expectation) {
-            if ($expectation->Type === $type) {
-                if ($expectation->MethodName === $methodName) {
-                    $isMatch = true;
-                    if ($expectation->ExpectArguments) {
-                        $isMatch = $this->argumentsMatch(
-                            $expectation->MethodArguments,
-                            $arguments
-                        );
-                    }
-                    if ($isMatch) {
-                        return $expectation;
-                    }
-                }
-            }
-        }
-        return null;
+    private function getMatchingExpectation($type, $methodName, $arguments) {
+	foreach ($this->Expectations as $expectation) {
+	    if ($expectation->Type === $type) {
+		if ($expectation->MethodName === $methodName) {
+		    $isMatch = true;
+		    if ($expectation->ExpectArguments) {
+			$isMatch = $this->argumentsMatch(
+				$expectation->MethodArguments, $arguments
+			);
+		    }
+		    if ($isMatch) {
+			return $expectation;
+		    }
+		}
+	    }
+	}
+	return null;
     }
 
-    private function argumentsMatch($arguments1, $arguments2)
-    {
-        $Count1 = count($arguments1);
-        $Count2 = count($arguments2);
-        $isMatch = true;
-        if ($Count1 === $Count2) {
-            for ($i = 0; $i < $Count1; ++$i) {
-                if ($arguments1[$i] === Expect::AnyValue
-                    || $arguments2[$i] === Expect::AnyValue) {
-                    // No need to match
-                } else {
-                    if ($arguments1[$i] !== $arguments2[$i]) {
-                        $isMatch = false;
-                    }
-                }
-            }
-        } else {
-            $isMatch = false;
-        }
-        return $isMatch;
+    private function argumentsMatch($arguments1, $arguments2) {
+	$Count1 = count($arguments1);
+	$Count2 = count($arguments2);
+	$isMatch = true;
+	if ($Count1 === $Count2) {
+	    for ($i = 0; $i < $Count1; ++$i) {
+		if ($arguments1[$i] === Expect::AnyValue
+			|| $arguments2[$i] === Expect::AnyValue) {
+		    // No need to match
+		} else {
+		    if ($arguments1[$i] !== $arguments2[$i]) {
+			$isMatch = false;
+		    }
+		}
+	    }
+	} else {
+	    $isMatch = false;
+	}
+	return $isMatch;
     }
+
 }
 
-class Scenario
-{
+class Scenario {
+
     private $Text;
     private $Class;
     private $FunctionName;
     private $Inputs = array();
     private $Expectations = array();
 
-    public function __construct($class, $functionName, $language)
-    {
-        $this->Class = $class;
-        $this->FunctionName = $functionName;
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($class, $functionName, $language) {
+	$this->Class = $class;
+	$this->FunctionName = $functionName;
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function with()
-    {
-        $this->Inputs[] = func_get_args();
-        return $this;
+    public function with() {
+	$this->Inputs[] = func_get_args();
+	return $this;
     }
 
-    public function expect()
-    {
-        $this->Expectations[] = func_get_args();
-        return $this;
+    public function expect() {
+	$this->Expectations[] = func_get_args();
+	return $this;
     }
 
-    public function verifyExpectations()
-    {
-        if (count($this->Inputs) !== count($this->Expectations)) {
-            throw new \Exception($this->Text->ScenarioWithExpectMismatch);
-        }
+    public function verifyExpectations() {
+	if (count($this->Inputs) !== count($this->Expectations)) {
+	    throw new \Exception($this->Text->ScenarioWithExpectMismatch);
+	}
 
-        $exceptionText = '';
+	$exceptionText = '';
 
-        while(count($this->Inputs) > 0) {
-            $input = array_shift($this->Inputs);
-            $expected = array_shift($this->Expectations);
-            $expected = $expected[0];
+	while (count($this->Inputs) > 0) {
+	    $input = array_shift($this->Inputs);
+	    $expected = array_shift($this->Expectations);
+	    $expected = $expected[0];
 
-            $actual = call_user_func_array(array($this->Class, $this->FunctionName), $input);
+	    $actual = call_user_func_array(array($this->Class, $this->FunctionName), $input);
 
-            if (is_float($expected)) {
-                if ((string)$expected !== (string)$actual) {
-                    $exceptionText .= str_replace('{0}', $expected, str_replace('{1}', $actual, $this->Text->FormatForExpectedButWas));
-                }
-            } elseif ($expected != $actual) {
-                $exceptionText .= str_replace('{0}', $expected, str_replace('{1}', $actual, $this->Text->FormatForExpectedButWas));
-            }
-        }
+	    if (is_float($expected)) {
+		if ((string) $expected !== (string) $actual) {
+		    $exceptionText .= str_replace('{0}', $expected, str_replace('{1}', $actual, $this->Text->FormatForExpectedButWas));
+		}
+	    } elseif ($expected != $actual) {
+		$exceptionText .= str_replace('{0}', $expected, str_replace('{1}', $actual, $this->Text->FormatForExpectedButWas));
+	    }
+	}
 
-        if ($exceptionText !== ''){
-            throw new TestException($exceptionText, 0);
-        }
+	if ($exceptionText !== '') {
+	    throw new TestException($exceptionText, 0);
+	}
     }
+
 }
 
-class Expectation
-{
+class Expectation {
+
     public $MethodName;
     public $MethodArguments;
     public $ReturnValue;
@@ -1008,515 +952,446 @@ class Expectation
     public $Type;
     public $Text;
 
-    public function __construct($language)
-    {
-        $this->ExpectedCalls = -1;
-        $this->ActualCalls = 0;
-        $this->ExpectArguments = false;
-        $this->ExpectTimes = false;
-        $this->ReturnException = false;
-        $this->ReturnValue = null;
-        $textFactory = new TextFactory();
-        $this->Text = $textFactory->getLanguageText($language);
+    public function __construct($language) {
+	$this->ExpectedCalls = -1;
+	$this->ActualCalls = 0;
+	$this->ExpectArguments = false;
+	$this->ExpectTimes = false;
+	$this->ReturnException = false;
+	$this->ReturnValue = null;
+	$textFactory = new TextFactory();
+	$this->Text = $textFactory->getLanguageText($language);
     }
 
-    public function method($methodName)
-    {
-        $this->Type = 'method';
-        $this->MethodName =  $methodName;
-        return $this;
+    public function method($methodName) {
+	$this->Type = 'method';
+	$this->MethodName = $methodName;
+	return $this;
     }
 
-    public function getProperty($propertyName)
-    {
-        $this->Type = 'getProperty';
-        $this->MethodName =  $propertyName;
-        return $this;
+    public function getProperty($propertyName) {
+	$this->Type = 'getProperty';
+	$this->MethodName = $propertyName;
+	return $this;
     }
 
-    public function setProperty($propertyName)
-    {
-        $this->Type = 'setProperty';
-        $this->MethodName =  $propertyName;
-        return $this;
+    public function setProperty($propertyName) {
+	$this->Type = 'setProperty';
+	$this->MethodName = $propertyName;
+	return $this;
     }
 
-    public function with()
-    {
-        $this->ExpectArguments = true;
-        $this->MethodArguments = func_get_args();
-        return $this;
+    public function with() {
+	$this->ExpectArguments = true;
+	$this->MethodArguments = func_get_args();
+	return $this;
     }
 
-    public function returns($returnValue)
-    {
-        if ($this->ReturnValue !== null) {
-            throw new \Exception($this->Text->ReturnsOrThrowsNotBoth);
-        }
-        $this->ReturnValue = $returnValue;
-        return $this;
+    public function returns($returnValue) {
+	if ($this->ReturnValue !== null) {
+	    throw new \Exception($this->Text->ReturnsOrThrowsNotBoth);
+	}
+	$this->ReturnValue = $returnValue;
+	return $this;
     }
 
-    public function throws($errorMessage)
-    {
-        if ($this->ReturnValue !== null) {
-            throw new \Exception($this->Text->ReturnsOrThrowsNotBoth);
-        }
-        $this->ReturnValue = $errorMessage;
-        $this->ReturnException = true;
-        return $this;
+    public function throws($errorMessage) {
+	if ($this->ReturnValue !== null) {
+	    throw new \Exception($this->Text->ReturnsOrThrowsNotBoth);
+	}
+	$this->ReturnValue = $errorMessage;
+	$this->ReturnException = true;
+	return $this;
     }
 
-    public function times($expectedCalls)
-    {
-        $this->ExpectTimes = true;
-        $this->ExpectedCalls = $expectedCalls;
-        return $this;
+    public function times($expectedCalls) {
+	$this->ExpectTimes = true;
+	$this->ExpectedCalls = $expectedCalls;
+	return $this;
     }
 
-    public function verify()
-    {
-        $ExpectationMet = true;
-        if ($this->ExpectTimes) {
-            if ($this->ExpectedCalls !== $this->ActualCalls) {
-                $ExpectationMet = false;
-            }
-        }
-        return $ExpectationMet;
+    public function verify() {
+	$ExpectationMet = true;
+	if ($this->ExpectTimes) {
+	    if ($this->ExpectedCalls !== $this->ActualCalls) {
+		$ExpectationMet = false;
+	    }
+	}
+	return $ExpectationMet;
     }
+
 }
 
-class Assertions
-{
+class Assertions {
+
     private $Text;
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function areIdentical($expected, $actual)
-    {
-        if (is_float($expected)) {
-            if ((string)$expected !== (string)$actual) {
-                throw new TestException(
-                    str_replace('{0}', $this->getDescription($expected),
-                        str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-            }
-        } elseif ($expected !== $actual) {
-            throw new TestException(
-                str_replace('{0}', $this->getDescription($expected),
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function areIdentical($expected, $actual) {
+	if (is_float($expected)) {
+	    if ((string) $expected !== (string) $actual) {
+		throw new TestException(
+			str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	    }
+	} elseif ($expected !== $actual) {
+	    throw new TestException(
+		    str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function areNotIdentical($expected, $actual)
-    {
-        if (is_float($expected)) {
-            if ((string)$expected === (string)$actual) {
-                throw new TestException(
-                    str_replace('{0}', $this->getDescription($expected),
-                        str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-            }
-        } elseif ($expected === $actual) {
-            throw new TestException(
-                str_replace('{0}', $this->getDescription($expected),
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function areNotIdentical($expected, $actual) {
+	if (is_float($expected)) {
+	    if ((string) $expected === (string) $actual) {
+		throw new TestException(
+			str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	    }
+	} elseif ($expected === $actual) {
+	    throw new TestException(
+		    str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isTrue($actual)
-    {
-        if ($actual !== true) {
-            throw new TestException(
-                str_replace('{0}', 'true',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isTrue($actual) {
+	if ($actual !== true) {
+	    throw new TestException(
+		    str_replace('{0}', 'true', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isFalse($actual)
-    {
-        if ($actual !== false) {
-            throw new TestException(
-                str_replace('{0}', 'false',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isFalse($actual) {
+	if ($actual !== false) {
+	    throw new TestException(
+		    str_replace('{0}', 'false', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function contains($expected, $actual)
-    {
-        $result = strpos($actual, $expected);
-        if ($result === false) {
-            throw new TestException(
-                str_replace('{0}', $this->getDescription($expected),
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedContainsButWas)), 0);
-        }
+    public function contains($expected, $actual) {
+	$result = strpos($actual, $expected);
+	if ($result === false) {
+	    throw new TestException(
+		    str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedContainsButWas)), 0);
+	}
     }
 
-    public function notContains($expected, $actual)
-    {
-        $result = strpos($actual, $expected);
-        if ($result !== false) {
-            throw new TestException(
-                str_replace('{0}', $this->getDescription($expected),
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotContainsButWas)), 0);
-        }
+    public function notContains($expected, $actual) {
+	$result = strpos($actual, $expected);
+	if ($result !== false) {
+	    throw new TestException(
+		    str_replace('{0}', $this->getDescription($expected), str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotContainsButWas)), 0);
+	}
     }
 
-    public function isNull($actual)
-    {
-        if ($actual !== null) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isNull($actual) {
+	if ($actual !== null) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotNull($actual)
-    {
-        if ($actual === null) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotNull($actual) {
+	if ($actual === null) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isArray($actual)
-    {
-        if (!is_array($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isArray($actual) {
+	if (!is_array($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotArray($actual)
-    {
-        if (is_array($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotArray($actual) {
+	if (is_array($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isBool($actual)
-    {
-        if (!is_bool($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isBool($actual) {
+	if (!is_bool($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotBool($actual)
-    {
-        if (is_bool($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotBool($actual) {
+	if (is_bool($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isFloat($actual)
-    {
-        if (!is_float($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isFloat($actual) {
+	if (!is_float($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotFloat($actual)
-    {
-        if (is_float($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotFloat($actual) {
+	if (is_float($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isInt($actual)
-    {
-        if (!is_int($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isInt($actual) {
+	if (!is_int($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotInt($actual)
-    {
-        if (is_int($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotInt($actual) {
+	if (is_int($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isNumeric($actual)
-    {
-        if (!is_numeric($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isNumeric($actual) {
+	if (!is_numeric($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotNumeric($actual)
-    {
-        if (is_numeric($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotNumeric($actual) {
+	if (is_numeric($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isObject($actual)
-    {
-        if (!is_object($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isObject($actual) {
+	if (!is_object($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotObject($actual)
-    {
-        if (is_object($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotObject($actual) {
+	if (is_object($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isResource($actual)
-    {
-        if (!is_resource($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isResource($actual) {
+	if (!is_resource($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotResource($actual)
-    {
-        if (is_resource($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotResource($actual) {
+	if (is_resource($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isScalar($actual)
-    {
-        if (!is_scalar($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isScalar($actual) {
+	if (!is_scalar($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotScalar($actual)
-    {
-        if (is_scalar($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotScalar($actual) {
+	if (is_scalar($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function isString($actual)
-    {
-        if (!is_string($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
-        }
+    public function isString($actual) {
+	if (!is_string($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedButWas)), 0);
+	}
     }
 
-    public function isNotString($actual)
-    {
-        if (is_string($actual)) {
-            throw new TestException(
-                str_replace('{0}', 'null',
-                    str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
-        }
+    public function isNotString($actual) {
+	if (is_string($actual)) {
+	    throw new TestException(
+		    str_replace('{0}', 'null', str_replace('{1}', $this->getDescription($actual), $this->Text->FormatForExpectedNotButWas)), 0);
+	}
     }
 
-    public function fail()
-    {
-        throw new TestException($this->Text->Failed, 0);
+    public function fail() {
+	throw new TestException($this->Text->Failed, 0);
     }
 
-    public function inconclusive()
-    {
-        throw new TestException($this->Text->InconclusiveOrNotImplemented, 0);
+    public function inconclusive() {
+	throw new TestException($this->Text->InconclusiveOrNotImplemented, 0);
     }
 
-    public function isInstanceOfType($expected, $actual)
-    {
-        $actualType = get_class($actual);
-        if ($expected !== $actualType) {
-            throw new TestException(
-                str_replace('{0}', $expected,
-                    str_replace('{1}', $actualType, $this->Text->FormatForExpectedButWas)), 0);
-        };
+    public function isInstanceOfType($expected, $actual) {
+	$actualType = get_class($actual);
+	if ($expected !== $actualType) {
+	    throw new TestException(
+		    str_replace('{0}', $expected, str_replace('{1}', $actualType, $this->Text->FormatForExpectedButWas)), 0);
+	};
     }
 
-    public function isNotInstanceOfType($expected, $actual)
-    {
-        $actualType = get_class($actual);
-        if ($expected === $actualType) {
-            throw new TestException(
-                str_replace('{0}', $expected,
-                    str_replace('{1}', $actualType, $this->Text->FormatForExpectedNotButWas)), 0);
-        };
+    public function isNotInstanceOfType($expected, $actual) {
+	$actualType = get_class($actual);
+	if ($expected === $actualType) {
+	    throw new TestException(
+		    str_replace('{0}', $expected, str_replace('{1}', $actualType, $this->Text->FormatForExpectedNotButWas)), 0);
+	};
     }
 
-    public function throws($class, $methodName, $args = null)
-    {
-        $exception = false;
+    public function throws($class, $methodName, $args = null) {
+	$exception = false;
 
-        try {
-            if ($args !== null) {
-                /** @noinspection PhpParamsInspection */
-                call_user_func_array(array($class, $methodName), $args);
-            } else {
-                $class->{$methodName}();
-            }
-        } catch (\Exception $e) {
-            $exception = true;
-        }
+	try {
+	    if ($args !== null) {
+		/** @noinspection PhpParamsInspection */
+		call_user_func_array(array($class, $methodName), $args);
+	    } else {
+		$class->{$methodName}();
+	    }
+	} catch (\Exception $e) {
+	    $exception = true;
+	}
 
-        if (!$exception) {
-            throw new TestException($this->Text->ExpectedExceptionNotThrown, 0);
-        }
+	if (!$exception) {
+	    throw new TestException($this->Text->ExpectedExceptionNotThrown, 0);
+	}
     }
 
-    private function getDescription($mixed)
-    {
-        if (is_object($mixed)){
-            return get_class($mixed);
-        } else if (is_bool($mixed)){
-            return $mixed ? 'true' : 'false';
-        } else {
-            return (string) $mixed;
-        }
+    private function getDescription($mixed) {
+	$return = NULL;
+	if (is_object($mixed)) {
+	    $return = get_class($mixed);
+	} else if (is_bool($mixed)) {
+	    $return = $mixed ? 'true' : 'false';
+	} else {
+	    $return = (string) $mixed;
+	}
+
+	return '(' . gettype($mixed) . ') ' . $return;
     }
+
 }
 
-class TestException extends \Exception
-{
-    public function __construct($message = null, $code = 0, \Exception $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
+class TestException extends \Exception {
 
-        $trace = $this->getTrace();
+    public function __construct($message = null, $code = 0, \Exception $previous = null) {
+	parent::__construct($message, $code, $previous);
 
-        $this->line = $trace[1]['line'];
-        $this->file = $trace[1]['file'];
+	$trace = $this->getTrace();
+
+	$this->line = $trace[1]['line'];
+	$this->file = $trace[1]['file'];
     }
+
 }
 
-interface iOutputTemplate
-{
+interface iOutputTemplate {
+
     public function getTemplateType();
+
     public function get($errors, $results, $text, $duration, $methodCalls);
 }
 
-interface iTestable
-{
+interface iTestable {
+
     public function setUp();
+
     public function tearDown();
 }
 
-class HtmlTemplate implements iOutputTemplate
-{
+class HtmlTemplate implements iOutputTemplate {
+
     private $Text;
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function getTemplateType()
-    {
-        return TemplateType::Html;
+    public function getTemplateType() {
+	return TemplateType::Html;
     }
 
-    public function get($errors, $results, $text, $duration, $methodCalls)
-    {
-        $message = '';
-        $failCount = count($errors);
-        $passCount = count($results);
-        $methodCallCount = count($methodCalls);
+    public function get($errors, $results, $text, $duration, $methodCalls) {
+	$message = '';
+	$failCount = count($errors);
+	$passCount = count($results);
+	$methodCallCount = count($methodCalls);
 
-        $currentClass = '';
-        if ($failCount > 0) {
-            $message .= '<h2 class="error">' . $text->Test . ' ' . $text->Failed . '</h2>';
+	$currentClass = '';
+	if ($failCount > 0) {
+	    $message .= '<h2 class="error">' . $text->Test . ' ' . $text->Failed . '</h2>';
 
-            $message .= '<ul>';
-            foreach ($errors as $error) {
-                $testClassName = $error->Test->getClassName();
-                if ($testClassName != $currentClass) {
-                    if ($currentClass === '') {
-                        $message .= '<li>';
-                    } else {
-                        $message .= '</ul></li><li>';
-                    }
-                    $message .=  '<strong>' . $testClassName . '</strong><ul>';
-                    $currentClass = $testClassName;
-                }
-                $message .= '<li class="error">' . $error->Message . '</li>';
-            }
-            $message .= '</ul></li></ul>';
-        } else {
-            $message .= '<h2 class="ok">' . $text->TestPassed . '</h2>';
-        }
+	    $message .= '<ul>';
+	    foreach ($errors as $error) {
+		$testClassName = $error->Test->getClassName();
+		if ($testClassName != $currentClass) {
+		    if ($currentClass === '') {
+			$message .= '<li>';
+		    } else {
+			$message .= '</ul></li><li>';
+		    }
+		    $message .= '<strong>' . $testClassName . '</strong><ul>';
+		    $currentClass = $testClassName;
+		}
+		$message .= '<li class="error">' . $error->Message . '</li>';
+	    }
+	    $message .= '</ul></li></ul>';
+	} else {
+	    $message .= '<h2 class="ok">' . $text->TestPassed . '</h2>';
+	}
 
-        $currentClass = '';
-        if ($passCount > 0) {
-            $message .= '<ul>';
-            foreach ($results as $result) {
-                $testClassName = $result->Test->getClassName();
-                if ($testClassName != $currentClass) {
-                    if ($currentClass === '') {
-                        $message .= '<li>';
-                    } else {
-                        $message .= '</ul></li><li>';
-                    }
-                    $message .=  '<strong>' . $testClassName . '</strong><ul>';
-                    $currentClass = $testClassName;
-                }
-                $message .= '<li class="ok">' . $result->Message . '</li>';
-            }
-            $message .= '</ul></li></ul>';
-        }
+	$currentClass = '';
+	if ($passCount > 0) {
+	    $message .= '<ul>';
+	    foreach ($results as $result) {
+		$testClassName = $result->Test->getClassName();
+		if ($testClassName != $currentClass) {
+		    if ($currentClass === '') {
+			$message .= '<li>';
+		    } else {
+			$message .= '</ul></li><li>';
+		    }
+		    $message .= '<strong>' . $testClassName . '</strong><ul>';
+		    $currentClass = $testClassName;
+		}
+		$message .= '<li class="ok">' . $result->Message . '</li>';
+	    }
+	    $message .= '</ul></li></ul>';
+	}
 
-        $message .= '<h3>' . $text->MethodCoverage . '</h3>';
-        if ($methodCallCount > 0) {
-            $message .= '<ul>';
-            foreach ($methodCalls as $key => $value) {
-                $key = str_replace('#', '->', $key);
-                if ($value === 0) {
-                    $message .= '<li class="error">' . $key . ' ' . $text->Called . ' ' . $value . ' ' .
-                        $text->Times . '</li>';
-                } else {
-                    $message .= '<li class="ok">' . $key . ' ' . $text->Called . ' ' . $value . ' ' .
-                        $text->Times . '</li>';
-                }
-            }
-            $message .= '</ul>';
-        }
+	$message .= '<h3>' . $text->MethodCoverage . '</h3>';
+	if ($methodCallCount > 0) {
+	    $message .= '<ul>';
+	    foreach ($methodCalls as $key => $value) {
+		$key = str_replace('#', '->', $key);
+		if ($value === 0) {
+		    $message .= '<li class="error">' . $key . ' ' . $text->Called . ' ' . $value . ' ' .
+			    $text->Times . '</li>';
+		} else {
+		    $message .= '<li class="ok">' . $key . ' ' . $text->Called . ' ' . $value . ' ' .
+			    $text->Times . '</li>';
+		}
+	    }
+	    $message .= '</ul>';
+	}
 
-        $message .= '<p>' . str_replace('{0}', $duration, $text->FormatForTestRunTook) . '</p>';
+	$message .= '<p>' . str_replace('{0}', $duration, $text->FormatForTestRunTook) . '</p>';
 
-        return $this->getTemplateWithMessage($message);
+	return $this->getTemplateWithMessage($message);
     }
 
-    private function getTemplateWithMessage($content)
-    {
-        return str_replace('{0}', $content, '<!DOCTYPE html>
+    private function getTemplateWithMessage($content) {
+	return str_replace('{0}', $content, '<!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="utf-8">
@@ -1535,11 +1410,11 @@ class HtmlTemplate implements iOutputTemplate
                         padding-bottom: 5em;
                     }
                 
-                    .error {
+                    .error, .error * {
                         color: red;
                     }
                     
-                    .ok {
+                    .ok, .ok * {
                         color: green;
                     }
                 </style>
@@ -1555,256 +1430,244 @@ class HtmlTemplate implements iOutputTemplate
         
                 <footer>
                     <p><a href="http://www.enhance-php.com/">' . $this->Text->EnhanceTestFrameworkFull . '</a> ' .
-            $this->Text->Copyright . ' &copy;2011 - ' . date('Y') .
-            ' <a href="http://www.stevefenton.co.uk/">Steve Fenton</a>.</p>
+			$this->Text->Copyright . ' &copy;2011 - ' . date('Y') .
+			' <a href="http://www.stevefenton.co.uk/">Steve Fenton</a>.</p>
                 </footer>
             </body>
         </html>');
     }
+
 }
 
-class XmlTemplate implements iOutputTemplate
-{
+class XmlTemplate implements iOutputTemplate {
+
     private $Text;
     private $Tab = "    ";
     private $CR = "\n";
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function getTemplateType()
-    {
-        return TemplateType::Xml;
+    public function getTemplateType() {
+	return TemplateType::Xml;
     }
 
-    public function get($errors, $results, $text, $duration, $methodCalls)
-    {
-        $message = '';
-        $failCount = count($errors);
+    public function get($errors, $results, $text, $duration, $methodCalls) {
+	$message = '';
+	$failCount = count($errors);
 
-        $message .= '<enhance>' . $this->CR;
-        if ($failCount > 0) {
-            $message .= $this->getNode(1, 'result', $text->TestFailed);
-        } else {
-            $message .= $this->getNode(1, 'result', $text->TestPassed);
-        }
+	$message .= '<enhance>' . $this->CR;
+	if ($failCount > 0) {
+	    $message .= $this->getNode(1, 'result', $text->TestFailed);
+	} else {
+	    $message .= $this->getNode(1, 'result', $text->TestPassed);
+	}
 
-        $message .= $this->Tab . '<testResults>' . $this->CR .
-            $this->getBadResults($errors) .
-            $this->getGoodResults($results) .
-            $this->Tab . '</testResults>' . $this->CR .
-            $this->Tab . '<codeCoverage>' . $this->CR .
-            $this->getCodeCoverage($methodCalls) .
-            $this->Tab . '</codeCoverage>' . $this->CR;
+	$message .= $this->Tab . '<testResults>' . $this->CR .
+		$this->getBadResults($errors) .
+		$this->getGoodResults($results) .
+		$this->Tab . '</testResults>' . $this->CR .
+		$this->Tab . '<codeCoverage>' . $this->CR .
+		$this->getCodeCoverage($methodCalls) .
+		$this->Tab . '</codeCoverage>' . $this->CR;
 
-        $message .= $this->getNode(1, 'testRunDuration', $duration) .
-            '</enhance>' . $this->CR;
+	$message .= $this->getNode(1, 'testRunDuration', $duration) .
+		'</enhance>' . $this->CR;
 
-        return $this->getTemplateWithMessage($message);
+	return $this->getTemplateWithMessage($message);
     }
 
-    public function getBadResults($errors)
-    {
-        $message = '';
-        foreach ($errors as $error) {
-            $message .= $this->getNode(2, 'fail', $error->Message);
-        }
-        return $message;
+    public function getBadResults($errors) {
+	$message = '';
+	foreach ($errors as $error) {
+	    $message .= $this->getNode(2, 'fail', $error->Message);
+	}
+	return $message;
     }
 
-    public function getGoodResults($results)
-    {
-        $message = '';
-        foreach ($results as $result) {
-            $message .= $this->getNode(2, 'pass', $result->Message);
-        }
-        return $message;
+    public function getGoodResults($results) {
+	$message = '';
+	foreach ($results as $result) {
+	    $message .= $this->getNode(2, 'pass', $result->Message);
+	}
+	return $message;
     }
 
-    public function getCodeCoverage($methodCalls)
-    {
-        $message = '';
-        foreach ($methodCalls as $key => $value) {
-            $message .= $this->buildCodeCoverageMessage($key, $value);
-        }
-        return $message;
+    public function getCodeCoverage($methodCalls) {
+	$message = '';
+	foreach ($methodCalls as $key => $value) {
+	    $message .= $this->buildCodeCoverageMessage($key, $value);
+	}
+	return $message;
     }
 
-    private function buildCodeCoverageMessage($key, $value)
-    {
-        return $this->Tab . $this->Tab . '<method>' . $this->CR .
-            $this->getNode(3, 'name', str_replace('#', '-&gt;', $key)) .
-            $this->getNode(3, 'timesCalled', $value) .
-            $this->Tab . $this->Tab . '</method>' . $this->CR;
+    private function buildCodeCoverageMessage($key, $value) {
+	return $this->Tab . $this->Tab . '<method>' . $this->CR .
+		$this->getNode(3, 'name', str_replace('#', '-&gt;', $key)) .
+		$this->getNode(3, 'timesCalled', $value) .
+		$this->Tab . $this->Tab . '</method>' . $this->CR;
     }
 
-    private function getNode($tabs, $nodeName, $nodeValue)
-    {
-        $node = '';
-        for ($i = 0; $i < $tabs; ++$i){
-            $node .= $this->Tab;
-        }
-        $node .= '<' . $nodeName . '>' . $nodeValue . '</' . $nodeName . '>' . $this->CR;
+    private function getNode($tabs, $nodeName, $nodeValue) {
+	$node = '';
+	for ($i = 0; $i < $tabs; ++$i) {
+	    $node .= $this->Tab;
+	}
+	$node .= '<' . $nodeName . '>' . $nodeValue . '</' . $nodeName . '>' . $this->CR;
 
-        return $node;
+	return $node;
     }
 
-    private function getTemplateWithMessage($content)
-    {
-        return str_replace('{0}', $content, '<?xml version="1.0" encoding="UTF-8" ?>' . "\n" .
-            '{0}');
+    private function getTemplateWithMessage($content) {
+	return str_replace('{0}', $content, '<?xml version="1.0" encoding="UTF-8" ?>' . "\n" .
+			'{0}');
     }
+
 }
 
-class CliTemplate implements iOutputTemplate
-{
+class CliTemplate implements iOutputTemplate {
+
     private $Text;
     private $CR = "\n";
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function getTemplateType()
-    {
-        return TemplateType::Cli;
+    public function getTemplateType() {
+	return TemplateType::Cli;
     }
 
-    public function get($errors, $results, $text, $duration, $methodCalls)
-    {
-        $failCount = count($errors);
+    public function get($errors, $results, $text, $duration, $methodCalls) {
+	$failCount = count($errors);
 
-        $resultMessage = $text->TestPassed . $this->CR;
-        if ($failCount > 0) {
-            $resultMessage = $text->TestFailed . $this->CR;
-        }
+	$resultMessage = $text->TestPassed . $this->CR;
+	if ($failCount > 0) {
+	    $resultMessage = $text->TestFailed . $this->CR;
+	}
 
-        $message = $this->CR .
-            $resultMessage .
-            $this->CR .
-            $this->getBadResults($errors) .
-            $this->getGoodResults($results) .
-            $this->CR .
-            $this->getMethodCoverage($methodCalls) .
-            $this->CR .
-            $resultMessage .
-            str_replace('{0}', $duration, $text->FormatForTestRunTook) . $this->CR;
+	$message = $this->CR .
+		$resultMessage .
+		$this->CR .
+		$this->getBadResults($errors) .
+		$this->getGoodResults($results) .
+		$this->CR .
+		$this->getMethodCoverage($methodCalls) .
+		$this->CR .
+		$resultMessage .
+		str_replace('{0}', $duration, $text->FormatForTestRunTook) . $this->CR;
 
-        return $message;
+	return $message;
     }
 
-    public function getBadResults($errors)
-    {
-        $message = '';
-        foreach ($errors as $error) {
-            $message .= $error->Message . $this->CR;
-        }
-        return $message;
+    public function getBadResults($errors) {
+	$message = '';
+	foreach ($errors as $error) {
+	    $message .= $error->Message . $this->CR;
+	}
+	return $message;
     }
 
-    public function getGoodResults($results)
-    {
-        $message = '';
-        foreach ($results as $result) {
-            $message .= $result->Message . $this->CR;
-        }
-        return $message;
+    public function getGoodResults($results) {
+	$message = '';
+	foreach ($results as $result) {
+	    $message .= $result->Message . $this->CR;
+	}
+	return $message;
     }
 
-    public function getMethodCoverage($methodCalls)
-    {
-        $message = '';
-        foreach ($methodCalls as $key => $value) {
-            $message .= str_replace('#', '->', $key) . ':' . $value . $this->CR;
-        }
-        return $message;
+    public function getMethodCoverage($methodCalls) {
+	$message = '';
+	foreach ($methodCalls as $key => $value) {
+	    $message .= str_replace('#', '->', $key) . ':' . $value . $this->CR;
+	}
+	return $message;
     }
+
 }
 
-class TapTemplate implements iOutputTemplate
-{
+class TapTemplate implements iOutputTemplate {
+
     private $Text;
     private $CR = "\n";
 
-    public function __construct($language)
-    {
-        $this->Text = TextFactory::getLanguageText($language);
+    public function __construct($language) {
+	$this->Text = TextFactory::getLanguageText($language);
     }
 
-    public function getTemplateType()
-    {
-        return TemplateType::Cli;
+    public function getTemplateType() {
+	return TemplateType::Cli;
     }
 
-    public function get($errors, $results, $text, $duration, $methodCalls)
-    {
-        $failCount = count($errors);
-        $passCount = count($results);
-        $total = $failCount + $passCount;
-        $count = 0;
+    public function get($errors, $results, $text, $duration, $methodCalls) {
+	$failCount = count($errors);
+	$passCount = count($results);
+	$total = $failCount + $passCount;
+	$count = 0;
 
-        $message = '1..' . $total . $this->CR;
+	$message = '1..' . $total . $this->CR;
 
-        foreach ($errors as $error) {
-            ++$count;
-            $message .= 'not ok ' . $count . ' ' . $error->Message . $this->CR;
-        }
+	foreach ($errors as $error) {
+	    ++$count;
+	    $message .= 'not ok ' . $count . ' ' . $error->Message . $this->CR;
+	}
 
-        foreach ($results as $result) {
-            ++$count;
-            $message .= 'ok ' . $count . ' ' . $result->Message . $this->CR;
-        }
+	foreach ($results as $result) {
+	    ++$count;
+	    $message .= 'ok ' . $count . ' ' . $result->Message . $this->CR;
+	}
 
-        return $message;
+	return $message;
     }
 
 }
 
-class TemplateFactory
-{
-    public static function createOutputTemplate($type, $language)
-    {
-        switch ($type) {
-            case TemplateType::Xml:
-                return new XmlTemplate($language);
-                break;
-            case TemplateType::Html:
-                return new HtmlTemplate($language);
-                break;
-            case TemplateType::Cli:
-                return new CliTemplate($language);
-                break;
-            case TemplateType::Tap:
-                return new TapTemplate($language);
-                break;
-        }
+class TemplateFactory {
 
-        return new HtmlTemplate($language);
+    public static function createOutputTemplate($type, $language) {
+	switch ($type) {
+	    case TemplateType::Xml:
+		return new XmlTemplate($language);
+		break;
+	    case TemplateType::Html:
+		return new HtmlTemplate($language);
+		break;
+	    case TemplateType::Cli:
+		return new CliTemplate($language);
+		break;
+	    case TemplateType::Tap:
+		return new TapTemplate($language);
+		break;
+	}
+
+	return new HtmlTemplate($language);
     }
+
 }
 
-class TemplateType
-{
+class TemplateType {
+
     const Xml = 0;
     const Html = 1;
     const Cli = 2;
     const Tap = 3;
+
 }
 
-class Language
-{
+class Language {
+
     const French = "Fr";
     const English = 'En';
     const Deutsch = 'De';
     const BrazilianPortuguese = 'PtBr';
     const Spanish = 'Sp';
     const Romana = 'Ro';
+
 }
 
-class Localisation
-{
+class Localisation {
+
     public $Language = Language::English;
+
 }
