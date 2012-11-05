@@ -567,7 +567,7 @@ class EnhanceTestFramework {
 		    'line' => $line,
 			), '', '&amp;');
 
-		$message = "<a href='editor://open/?$params' title='$filePath:$line'>[" . str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . ']</a> ' .
+		$message = "<a href='editor://open/?$params' title='$filePath:$line'>[<strong>" . str_replace('{0}', $test->getLine(), str_replace('{1}', $test->getFile(), $this->Text->LineFile)) . '</strong>]</a> ' .
 			$test->getTestName() . ' - ' .
 			$this->Text->Failed . ' - ' . $test->getMessage();
 		$this->Errors[] = new TestMessage($message, $test, false);
@@ -1277,7 +1277,7 @@ class Assertions {
 	    $return = (string) $mixed;
 	}
 
-	return '(' . gettype($mixed) . ') ' . $return;
+	return '(<strong>' . gettype($mixed) . '</strong>) ' . $return;
     }
 
 }
